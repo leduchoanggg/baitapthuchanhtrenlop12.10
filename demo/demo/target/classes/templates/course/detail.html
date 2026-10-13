@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chi tiết Khóa học</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+    <a th:href="@{/courses}" class="btn btn-secondary mb-3">&larr; Quay lại danh sách</a>
+    
+    <div class="card p-4 shadow-sm mb-4">
+        <h2 class="text-primary" th:text="${course.name}"></h2>
+        <p><strong>Học phí:</strong> <span th:text="${course.tuitionFee}"></span> VNĐ</p>
+        <p><strong>Thời lượng:</strong> <span th:text="${course.duration}"></span> giờ (<span th:text="${course.durationType}"></span>)</p>
+        <p><strong>Mô tả:</strong> <span th:text="${course.description}"></span></p>
+    </div>
+
+    <h3 class="mb-3">Danh sách ảnh khóa học & Chọn Thumbnail</h3>
+    <div class="row">
+        <div class="col-md-4 mb-3" th:each="img : ${images}">
+            <div class="card h-100 p-2">
+                <img th:src="${img.imageUrl}" class="card-img-top" style="height: 180px; object-fit: cover;" alt="Course Image">
+                <div class="card-body text-center">
+                    <span th:if="${img.isThumbnail}" class="badge bg-success mb-2">Ảnh Đại Diện (Thumbnail)</span>
+                    <span th:unless="${img.isThumbnail}" class="badge bg-light text-dark mb-2">Ảnh thường</span>
+                    
+                    <div>
+                        <form th:action="@{/courses/{courseId}/set-thumbnail/{imageId}(courseId=${course.id}, imageId=${img.id})}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-primary" th:disabled="${img.isThumbnail}">Đặt làm Thumbnail</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
